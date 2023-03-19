@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./assets/images/logo.svg";
 import mountain from "./assets/images/m1.svg";
 import mountain2 from "./assets/images/m2.svg";
@@ -9,8 +9,32 @@ import summer from "./assets/images/summer.svg";
 import night from "./assets/images/night.svg";
 import fresh from "./assets/images/fresh.svg";
 function App() {
+  let sunElement = document.getElementById("sun");
+  let mountainElement = document.getElementById("mountain");
+  let mountain2Element = document.getElementById("mountain2");
+  let village = document.getElementById("village");
+  let titleElement = document.getElementById("titleSection");
+  const [isActive, setIsActive] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsActive(true);
+    }, 200);
+  }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      var scrollY = window.scrollY;
+      if (titleElement) titleElement.style.top = scrollY * 1.2 + "px";
+      if (sunElement) {
+        sunElement.style.right = 348 + scrollY * 0.2 + "px";
+        sunElement.style.top = scrollY * 0.5 + "px";
+      }
+      if (mountainElement) mountainElement.style.top = scrollY * 0.5 + "px";
+      if (mountain2Element) mountain2Element.style.top = scrollY * 0.2 + "px";
+      if (village) village.style.top = -128 + scrollY * 0.2 + "px";
+    });
+  }, [titleElement, sunElement, mountain2Element]);
   return (
-    <div className=" overflow-x-hidden">
+    <div className=" overflow-x-hidden transition-all">
       <div className=" bg-gradient-to-b  from-[#92EAE5] to-[#FFFFDB] -z-[-100000] w-screen h-[36rem] md:h-screen overflow-hidden">
         {/*parallax scrolling | hero section*/}
         <section>
@@ -23,13 +47,13 @@ function App() {
             <div>
               <ul className="flex items-center gap-14  text-3xl ">
                 <li className="hover:cursor-pointer hover:text-black">
-                  <a href="#" >Home</a>
+                  <a href="#">Home</a>
                 </li>
                 <li className="hover:cursor-pointer hover:text-black">
-                  <a href="#" >About Us</a>
+                  <a href="#">About Us</a>
                 </li>
                 <li className="hover:cursor-pointer hover:text-black">
-                  <a href="#" >Experience</a>
+                  <a href="#">Experience</a>
                 </li>
                 <button className="border-2 rounded-full border-[#083649] py-2 px-4 md:px-8 md:py-5 font-medium">
                   Book A session
@@ -41,7 +65,12 @@ function App() {
 
         {/* Parallax scrolling */}
         <section className="relative ">
-          <div className=" flex flex-col text-center  absolute z-40 w-full gap-14  ">
+          <div
+            className={`  flex-col text-center  absolute z-40 w-full gap-14  ${
+              isActive ? "flex" : "hidden"
+            } duration-300`}
+            id="titleSection"
+          >
             <h1 className=" text-xl md:text-8xl px-96 uppercase font-bold">
               Lets open new horizon’s together
             </h1>
@@ -49,7 +78,10 @@ function App() {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </span>
-            <button className=" bg-[#083649] text-white font-bold rounded-xl  w-96 py-9 self-center text-4xl">
+            <button
+              className=" bg-[#083649] text-white font-bold rounded-xl  w-96 py-9 self-center text-4xl"
+              id="button"
+            >
               Get Started
             </button>
           </div>
@@ -59,26 +91,30 @@ function App() {
               src={mountain}
               alt="mountain"
               className=" z-10 absolute top-14"
+              id="mountain"
             />
             <img
               src={mountain2}
               alt="mountain2"
               className=" absolute z-10 top-8"
+              id="mountain2"
             />
             <img
               src={sun}
               alt="sun"
-              className="absolute top-0 right-96  w-72  h-72 z-[1]  md:right-[36rem] "
+              className="absolute right-96  w-72  h-72 z-[1]  md:right-[36rem] "
+              id="sun"
             />
             <img
               src={vilage}
               alt="village"
               className=" absolute z-20 -top-32"
+              id="village"
             />
             <img
               src={front}
               alt="front"
-              className=" z-30 absolute  top-20 md:top-60"
+              className=" z-50 absolute  top-20 md:top-60"
             />
           </div>
         </section>
